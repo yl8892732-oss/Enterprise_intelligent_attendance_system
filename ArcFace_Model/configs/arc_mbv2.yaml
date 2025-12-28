@@ -1,0 +1,21 @@
+# general
+batch_size: 128
+input_size: 112
+embd_shape: 512
+sub_name: 'arc_mbv2'
+backbone_type: 'MobileNetV2' # 'ResNet50', 'MobileNetV2'
+head_type: ArcHead # 'ArcHead', 'NormHead'
+is_ccrop: False # central-cropping or not
+
+# train
+train_dataset: 'D:/ait102/python/FaceID_Project/data/archive/lfw-deepfunneled/lfw-deepfunneled'
+binary_img: False
+num_classes: 5479
+num_samples: 13233
+epochs: 5
+base_lr: 0.01
+w_decay: !!float 5e-4
+save_steps: 1000
+
+# test
+test_dataset: 'D:/ait102/python/FaceID_Project/data/archive/lfw-deepfunneled/lfw-deepfunneled'
