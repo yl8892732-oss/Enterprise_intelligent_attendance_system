@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .chart-img {
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .chart-img:hover {
+            transform: scale(1.02);
+        }
+        body { background-color: #f8f9fa; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">🤖 云端考勤系统</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">📸 动态打卡</a>
+                <a class="nav-link" href="/register">👤 员工录入</a>
+                <a class="nav-link active" href="/report">📊 考勤报表</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="mb-4 text-center">📊 考勤可视化看板</h2>
+
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">Attendance Rate</div>
+                    <div class="card-body p-2">
+                        <img src="{{ url_for('static', filename='attendance_rate_bar.png') }}" class="chart-img" alt="暂无数据">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">Status Dist.</div>
+                    <div class="card-body p-2">
+                        <img src="{{ url_for('static', filename='attendance_pie.png') }}" class="chart-img" alt="暂无数据">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-warning text-dark">Daily Trend</div>
+                    <div class="card-body p-2">
+                        <img src="{{ url_for('static', filename='attendance_trend.png') }}" class="chart-img" alt="暂无数据">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mb-3">📄 详细考勤记录</h3>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID (工号)</th>
+                                <th>Name (姓名)</th>
+                                <th>Time (时间)</th>
+                                <th>Status (状态)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in records %}
+                            <tr>
+                                <td><span class="badge bg-secondary">{{ row.emp_id }}</span></td>
+                                <td><strong>{{ row.name }}</strong></td>
+                                <td>{{ row.check_time }}</td>
+                                <td>
+                                    {% if row.status == 'On Time' %}
+                                        <span class="badge bg-success">✅ On Time</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">⏰ Late</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted p-4">
+                                    暂无考勤数据，请先去打个卡吧！
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-5 mb-3 text-center text-muted">
+            <small>System Time: <script>document.write(new Date().toLocaleString())</script></small>
+        </footer>
+    </div>
+
+</body>
+</html>
